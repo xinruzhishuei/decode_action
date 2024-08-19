@@ -1,129 +1,148 @@
-//Fri Aug 16 2024 03:07:03 GMT+0000 (Coordinated Universal Time)
+//Mon Aug 19 2024 01:26:07 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
 const {
+  getEnvsByName,
+  DisableCk,
+  EnableCk,
+  updateEnv,
+  updateEnv11,
+  getEnvByUserId
+} = require("./ql");
+const {
   wait,
   checkCk,
-  getCookies,
+  validateCarmeWithType,
+  invalidCookieNotify,
   getUserInfo,
-  commonNativeRequest
+  runOne,
+  getCookieMap
 } = require("./common.js");
-const _0x493452 = 887;
-const _0x16a1cf = getCookies();
-async function _0x60ad8(_0x104f8a) {
-  _0x104f8a = await checkCk(_0x104f8a, -1);
-  if (!_0x104f8a) {
-    console.log("需要助力的账号失效！请重新登录！！！");
-    process.exit(0);
-  }
-  let _0x27a3f8;
-  let _0x168293 = await commonNativeRequest(_0x104f8a, "mtop.ele.biz.growth.task.core.querytask", "887", "1");
-  if (!_0x168293 || !_0x168293.data) {
-    console.log("获取到助力 id 失败，程序退出");
-    process.exit(0);
-    return;
-  }
-  for (const _0x280734 of _0x168293.data.mlist) {
-    if (_0x280734.name === "邀请好友助力") {
-      _0x27a3f8 = _0x280734.actionConfig.ext.shareId;
-      console.log("获取到的助力 id 为", _0x27a3f8);
-      return _0x27a3f8;
-    }
-  }
+const _0x11f78e = require("moment");
+function _0x543ec4(_0x3fdeea, _0x4dabab) {
+  return Math.floor(Math.random() * (_0x4dabab - _0x3fdeea + 1) + _0x3fdeea);
 }
-async function _0x2ecb19(_0x723906, _0x5afba3) {
-  try {
-    const _0xd1e102 = {
-      shareId: _0x5afba3
-    };
-    const _0xf8aefa = await commonNativeRequest(_0x723906, "mtop.koubei.interactioncenter.share.common.triggershare", _0x493452, 2, _0xd1e102);
-    if (_0xf8aefa.data && _0xf8aefa.data.errorMsg) {
-      console.log(_0xf8aefa.data.errorMsg);
-      return _0xf8aefa.data.errorMsg;
-    } else {
-      if (_0xf8aefa.data && _0xf8aefa.data.data.inviteeUserPrizes) {
-        console.log("助力成功");
-      } else {
-        console.log("助力：" + drawRes.ret[0]);
-      }
-    }
-  } catch (_0x463b6e) {}
-}
-async function _0x67fb9(_0xcd8fd8) {
-  let _0x2f8754 = await commonNativeRequest(_0xcd8fd8, "mtop.ele.biz.growth.task.core.querytask", "887", "1");
-  if (!_0x2f8754 || !_0x2f8754.data) {
-    console.log("获取邀请成功列表失败");
-    return;
+function _0x389941(_0x1daaab) {
+  let _0x59299c = "";
+  for (let [_0x7cf76, _0x5050e8] of _0x1daaab) {
+    _0x59299c += encodeURIComponent(_0x7cf76) + "=" + encodeURIComponent(_0x5050e8) + ";";
   }
-  console.log("开始领取邀请奖励");
-  for (const _0x1039dd of _0x2f8754.data.mlist) {
-    if (_0x1039dd.name === "邀请好友助力") {
-      for (const _0x69b0c3 of _0x1039dd.missionStageDTOS) {
-        if (_0x69b0c3.rewardStatus === "TODO" && _0x69b0c3.status === "FINISH") {
-          let _0x32aee8 = "mtop.ele.biz.growth.task.core.receiveprize";
-          try {
-            const _0x2cedab = {
-              count: _0x69b0c3.stageCount
-            };
-            const _0x2b9357 = await commonNativeRequest(_0xcd8fd8, _0x32aee8, _0x493452, 3, _0x2cedab);
-            if (_0x2b9357.data.errorMsg) {
-              console.log(_0x2b9357.data.errorMsg);
-            } else {
-              if (_0x2b9357.data && _0x2b9357.data.rlist[0]) {
-                let _0x2f7bdc = _0x2b9357.data.rlist[0];
-                console.log("获取", _0x2f7bdc.value, "乐园币");
-              }
-            }
-          } catch (_0x445112) {
-            console.log(_0x445112);
-          }
+  return _0x59299c;
+}
+async function _0x179175(_0x2afd75, _0x2c035c, _0x3898fc) {
+  let _0x1723ee = await runOne(_0x2c035c, _0x3898fc);
+  if (_0x1723ee && _0x1723ee.data) {
+    let _0x56dfb3 = _0x1723ee.data;
+    if (_0x56dfb3.code === 3000) {
+      let _0x152e9a = JSON.parse(_0x56dfb3.returnValue.data);
+      const _0x120021 = _0x152e9a.expires;
+      const _0x3e21d8 = _0x11f78e(_0x120021 * 1000).format("YYYY-MM-DD HH:mm:ss");
+      let _0xcf2e0a = getCookieMap(_0x2c035c);
+      let _0x1e14a1 = JSON.parse(_0x56dfb3.returnValue.extMap.eleExt);
+      for (let _0x325327 = 0; _0x325327 < _0x1e14a1.length; _0x325327++) {
+        let _0x296965 = _0x1e14a1[_0x325327];
+        if (_0x296965.name === "SID") {
+          _0xcf2e0a.SID = _0x296965.value;
+          break;
         }
       }
+      let _0x5a92f2 = await runOne(_0x2c035c, _0xcf2e0a.get("SID"));
+      if (!_0x5a92f2) {
+        return;
+      }
+      _0xcf2e0a.cookie2 = _0x56dfb3.returnValue.sid;
+      let _0xf79b29 = _0x389941(_0xcf2e0a);
+      if (_0x2afd75.id) {
+        await updateEnv11(_0xf79b29, _0x2afd75.id, _0x2afd75.remarks);
+      } else {
+        await updateEnv(_0xf79b29, _0x2afd75._id, _0x2afd75.remarks);
+      }
+      let _0x88e06c = _0xcf2e0a.get("USERID");
+      let _0x2704d2 = await getEnvByUserId(_0x88e06c);
+      if (_0x2704d2) {
+        console.log("检测到 elmqqck，将进行同步刷新");
+        if (_0x2704d2.id) {
+          await updateEnv11(_0xf79b29, _0x2704d2.id, _0x2704d2.remarks, "elmqqck");
+        } else {
+          await updateEnv(_0xf79b29, _0x2704d2._id, _0x2704d2.remarks, "elmqqck");
+        }
+      }
+      let _0x4bf6e8 = "刷新成功，ck 有效期为：" + _0x3e21d8;
+      console.log(_0x4bf6e8);
+      return _0x4bf6e8;
+    } else {
+      if (_0x56dfb3.message) {
+        console.log(_0x56dfb3.message);
+      } else {
+        console.log(_0x1723ee.ret[0]);
+      }
+      return null;
     }
   }
 }
-async function _0x45f983(_0x364049) {
-  const _0x288302 = await _0x60ad8(_0x364049);
-  for (let _0x477cf1 = 0; _0x477cf1 < _0x16a1cf.length; _0x477cf1++) {
-    let _0x2edfad = _0x16a1cf[_0x477cf1];
-    _0x2edfad = await checkCk(_0x2edfad, _0x477cf1);
-    if (!_0x2edfad) {
-      continue;
+(async function _0x1f3fe2() {
+  const _0xbb1015 = process.env.ELE_CARME;
+  await validateCarmeWithType(_0xbb1015, 1);
+  const _0x29805f = await getEnvsByName("elmck");
+  for (let _0x4b02a3 = 0; _0x4b02a3 < _0x29805f.length; _0x4b02a3++) {
+    let _0x55e0ac = _0x29805f[_0x4b02a3].value;
+    if (!_0x55e0ac) {
+      console.log(" ❌无效用户信息, 请重新获取ck");
+    } else {
+      try {
+        var _0x108a11 = 0;
+        if (_0x29805f[_0x4b02a3]._id) {
+          _0x108a11 = _0x29805f[_0x4b02a3]._id;
+        }
+        if (_0x29805f[_0x4b02a3].id) {
+          _0x108a11 = _0x29805f[_0x4b02a3].id;
+        }
+        _0x55e0ac = _0x55e0ac.replace(/\s/g, "");
+        let _0x36f4c6 = await checkCk(_0x55e0ac, _0x4b02a3);
+        if (!_0x36f4c6) {
+          let _0x2b2e4a = await _0x179175(_0x29805f[_0x4b02a3], _0x55e0ac);
+          if (_0x2b2e4a && _0x2b2e4a.indexOf("刷新成功") !== -1) {
+            await EnableCk(_0x108a11);
+            console.log("第", _0x4b02a3 + 1, "账号正常😁\n");
+          } else {
+            const _0x4fe156 = await DisableCk(_0x108a11);
+            if (_0x4fe156.code === 200) {
+              console.log("第", _0x4b02a3 + 1, "账号失效！已🈲用");
+            } else {
+              console.log("第", _0x4b02a3 + 1, "账号失效！请重新登录！！！😭");
+            }
+            await invalidCookieNotify(_0x55e0ac, _0x29805f[_0x4b02a3].remarks);
+          }
+        } else {
+          let _0x305e95 = await getUserInfo(_0x55e0ac);
+          if (!_0x305e95.username) {
+            let _0x21bffb = await _0x179175(_0x29805f[_0x4b02a3], _0x55e0ac);
+            if (_0x21bffb && _0x21bffb.indexOf("刷新成功") !== -1) {
+              await EnableCk(_0x108a11);
+              console.log("第", _0x4b02a3 + 1, "账号正常😁\n");
+            } else {
+              const _0x54a0b8 = await DisableCk(_0x108a11);
+              if (_0x54a0b8.code === 200) {
+                console.log("第", _0x4b02a3 + 1, "账号失效！已🈲用");
+              } else {
+                console.log("第", _0x4b02a3 + 1, "账号失效！请重新登录！！！😭");
+              }
+            }
+            await invalidCookieNotify(_0x55e0ac, _0x29805f[_0x4b02a3].remarks);
+          } else {
+            await _0x179175(_0x29805f[_0x4b02a3], _0x55e0ac, getCookieMap(_0x55e0ac).get("SID"));
+            await EnableCk(_0x108a11);
+            console.log("第", _0x4b02a3 + 1, "账号正常🎉🎉\n");
+          }
+        }
+      } catch (_0xaa7585) {
+        console.log(_0xaa7585);
+      }
     }
-    let _0x261d45 = await getUserInfo(_0x2edfad);
-    if (!_0x261d45.username) {
-      console.log("第", _0x477cf1 + 1, "账号失效！请重新登录！！！😭");
-      continue;
-    }
-    let _0x392096 = await _0x2ecb19(_0x2edfad, _0x288302);
-    if (_0x392096 === " 人传人关系已达上限") {
-      break;
-    }
-    console.log("延时 1-3 秒");
-    await wait(_0x4004bb(1, 3));
-  }
-  await _0x67fb9(_0x364049);
-}
-(async function () {
-  const _0x4b6576 = process.env.lybOwnCookie;
-  if (!_0x4b6576) {
-    console.log("未设置需助力的 ck，程序结束!");
-    process.exit(0);
-  }
-  if (_0x4b6576.indexOf("#") !== -1) {
-    let _0x450428 = _0x4b6576.split("#");
-    console.log("\n共有", _0x450428.length, "个需要助力的账号");
-    for (const _0x3d855a of _0x450428) {
-      await _0x45f983(_0x3d855a);
-    }
-  } else {
-    await _0x45f983(_0x4b6576);
+    await wait(_0x543ec4(2, 3));
   }
   process.exit(0);
 })();
-function _0x4004bb(_0x26dbeb, _0x482b90) {
-  return Math.floor(Math.random() * (_0x482b90 - _0x26dbeb + 1) + _0x26dbeb);
-}
 function Env(t, e) {
   "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
   class s {
