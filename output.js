@@ -1,4 +1,4 @@
-//Sun Dec 08 2024 19:34:11 GMT+0000 (Coordinated Universal Time)
+//Sun Dec 08 2024 19:37:28 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
 const _0x7436bc = new _0x153e21("阅龙湾");
