@@ -1,4 +1,4 @@
-//Fri May 16 2025 14:44:44 GMT+0000 (Coordinated Universal Time)
+//Sun Jun 01 2025 00:23:26 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
 const Iili1I = new lli1li("联通安全管家任务"),
