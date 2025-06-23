@@ -1,4 +1,4 @@
-//Mon Jun 23 2025 16:10:58 GMT+0000 (Coordinated Universal Time)
+//Mon Jun 23 2025 16:12:09 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
 const $ = new Env("慈晓");
